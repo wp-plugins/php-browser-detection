@@ -153,7 +153,7 @@ function is_mobile (){
 
 function is_iphone (){
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser'] == 'iPhone' )
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='iPhone')
 		return true;
 	return false;	
 }
