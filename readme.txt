@@ -62,3 +62,9 @@ EXAMPLE:
 1. Automatically install through the Plugin Browser or...
 1. Upload entire `php-browser-detection` folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
+
+== Changelog ==
+
+= 1.1 =
+* Fixed error on line 156 preventing activation
+

@@ -3,7 +3,7 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://martythornley.com/downloads/php-browser-info
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 1.0
+Version: 1.1
 Author: Marty Thornley
 Author URI: http://martythornley.com
 */
