@@ -65,6 +65,12 @@ EXAMPLE:
 
 == Changelog ==
 
+= 1.2 =
+
+* fixed the lesser than statements.
+* They had been looking for lesser than or equal to
+* Fixed the is_safari() statement.
+
 = 1.1 =
 * Fixed error on line 156 preventing activation
 

@@ -3,7 +3,7 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://martythornley.com/downloads/php-browser-info
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 1.1
+Version: 1.2
 Author: Marty Thornley
 Author URI: http://martythornley.com
 */
@@ -182,21 +182,21 @@ function is_IE7 (){
 
 function is_lt_IE6 (){
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE' && (int)$browserInfo['majorver'] <= 6)
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE' && (int)$browserInfo['majorver'] < 6)
 		return true;
 	return false;	
 }
 
 function is_lt_IE7 (){
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE' && (int)$browserInfo['majorver'] <= 7)
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE' && (int)$browserInfo['majorver'] < 7)
 		return true;
 	return false;	
 }
 
 function is_lt_IE8 (){
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE' && (int)$browserInfo['majorver'] <= 8)
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE' && (int)$browserInfo['majorver'] < 8)
 		return true;
 	return false;	
 }
@@ -210,7 +210,7 @@ function is_firefox (){
 
 function is_safari (){
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='Webkit')
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='Safari')
 		return true;
 	return false;	
 }
