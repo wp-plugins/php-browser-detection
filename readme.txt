@@ -2,7 +2,7 @@
 Contributors: MartyThornley
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11225299
 Tags: php, browser detection, browser, internet explorer, iphone, mobile
-Version: 2.0
+Version: 2.1
 Tested up to: 3.0.1
 Stable tag: trunk
 
@@ -78,6 +78,10 @@ Or with MU / MultiSite:
 1. Add 'php-browser-detection.php' and 'php_browser_detection_browscap.ini' to mu-plugins to make sure every blog has it auto activated.
 
 == Changelog ==
+
+= 2.1 =
+
+* fixed path info to work with 'mu-plugins' folder, version 2.0 didn't know how to find it.
 
 = 2.0 =
 

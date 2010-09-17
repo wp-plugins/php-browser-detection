@@ -83,7 +83,7 @@ returns array of all browser info.
 function php_browser_info(){
 	$agent = $_SERVER['HTTP_USER_AGENT'];
 	
-	$x = WP_PLUGIN_DIR.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)); 
+	$x = dirname(__FILE__); 
 	$browscap = $x . '/php_browser_detection_browscap.ini';
 	if(!is_file(realpath($browscap)))
 		return array('error'=>'No browscap ini file founded.');
