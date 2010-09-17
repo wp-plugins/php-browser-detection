@@ -3,7 +3,7 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://martythornley.com/downloads/php-browser-info
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 1.2
+Version: 2.0
 Author: Marty Thornley
 Author URI: http://martythornley.com
 */
@@ -27,64 +27,34 @@ Author URI: http://martythornley.com
 
 /* CREDITS
 
-	php_browser_info() - uses php_get_browser() - from http://www.davidtavarez.com/archives/detect-mobile-browsers-using-php/
-	php_browscap.ini is from php_browscap.ini - http://browsers.garykeith.com/downloads.asp
+	'php_browser_detection_browscap.ini' is the 'lite_php_browscap.ini' from php_browscap.ini - http://browsers.garykeith.com/downloads.asp
 
 */
 
 /* USE
 
-$browserInfo = php_browser_info();
+GET INFO:
 
-$platform = $browserInfo[platform];				- MacOSX
-$browser = $browserInfo[browser];				- Firefox
-$version = $browserInfo[version];				- 3.6
-$majorVersion = $browserInfo[majorver];     	- 3 (number to left of decimal)
-$minorVersion = $browserInfo[minorver];     	- 6 (number to right of decimal)
-$javascriptEnabled = $browserInfo[javascript]; 	- returns 1 if true
-$ismobiledevice = $browserInfo[ismobiledevice];	- returns 1 if true
-
-EXAMPLE ARRAY RETURNED:
-
-[browser_name_pattern] =&gt; Mozilla/5.0 (Macintosh; *; *Mac OS X*; *; rv:1.9.2*) Gecko/* Firefox/3.6*     
-[browser_name_regex] =&gt; ^mozilla/5\.0 (macintosh; .*; .*mac os x.*; .*; rv:1\.9\.2.*) gecko/.* firefox/3\.6.*$     
-[browser] =&gt; Firefox     
-[version] =&gt; 3.6     
-[majorver] =&gt; 3     
-[minorver] =&gt; 6     
-[platform] =&gt; MacOSX     
-[alpha] =&gt;      
-[beta] =&gt; 1     
-[win16] =&gt;      
-[win32] =&gt;      
-[win64] =&gt;      
-[frames] =&gt; 1     
-[iframes] =&gt; 1     
-[tables] =&gt; 1     
-[cookies] =&gt; 1     
-[backgroundsounds] =&gt;      
-[cdf] =&gt;      
-[vbscript] =&gt;      
-[javaapplets] =&gt; 1     
-[javascript] =&gt; 1     
-[activexcontrols] =&gt;      
-[isbanned] =&gt;      
-[ismobiledevice] =&gt;      
-[issyndicationreader] =&gt;      
-[crawler] =&gt;      
-[cssversion] =&gt; 3     
-[supportscss] =&gt; 1     
-[aol] =&gt;      
-[aolversion] =&gt; 0     
-[parent] =&gt; Firefox 3.6 
-
+php_browser_info() - returns array of all info
+get_browser_name() - returns just the name
+get_browser_version() - returns version and minor version (3.2)
 
 CONDITIONAL STATEMENTS INCLUDED:
 
-is_mobile ()
-is_iphone ()
+$version is optional. Include a number to test a specific one, or leave blank to test any for any version.
 
-is_IE ()
+is_firefox ($version)
+is_safari ($version)
+is_chrome ($version)
+is_opera ($version)
+is_IE ($version)
+
+is_iphone ($version)
+is_ipad ($version)
+is_ipod ($version)
+
+is_mobile ()
+
 is_IE6 ()
 is_IE7 ()
 
@@ -92,12 +62,20 @@ is_lt_IE6 ()
 is_lt_IE7 ()
 is_lt_IE8 ()
 
-is_firefox ()
-is_safari ()
+browser_supports_javascript()
+browser_supports_cookies()
+browser_supports_css()
+
 
 EXAMPLE:
 
 if (is_IE()) :  DO SOMETHING ; else :  DO OTHER STUFF; endif; 
+
+OR GET ALL INFO:
+
+$browserInfo = php_browser_info();
+
+returns array of all browser info.
 
 */
 
@@ -106,7 +84,7 @@ function php_browser_info(){
 	$agent = $_SERVER['HTTP_USER_AGENT'];
 	
 	$x = WP_PLUGIN_DIR.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)); 
-	$browscap = $x . '/php_browscap.ini';
+	$browscap = $x . '/php_browser_detection_browscap.ini';
 	if(!is_file(realpath($browscap)))
 		return array('error'=>'No browscap ini file founded.');
 	$agent=$agent?$agent:$_SERVER['HTTP_USER_AGENT'];
@@ -144,6 +122,117 @@ function php_browser_info(){
 	return $hu;
 }
 
+// GET BROWSER INFO **********************************************************
+
+function get_browser_name() {
+	
+	$browserInfo = php_browser_info();
+	
+	if (is_firefox() ):
+		return 'Firefox';
+	elseif (is_safari()) :
+		return 'Safari';
+	elseif (is_opera()) :
+		return 'Opera';		
+	elseif (is_chrome()) :
+		return 'Chrome';	
+	elseif (is_IE()) :
+		return 'The Root of all Evil';
+	elseif (is_ipad()) :
+		return 'iPad';
+	elseif (is_ipod()) :
+		return 'iPod';
+	elseif (is_iphone()) :
+		return 'iPhone';
+	else :
+		return 'Unknown Browser: ' . $browserInfo['browser'] . ' - Version: ' .get_browser_version();
+	endif;
+}
+
+function get_browser_version() {
+	$browserInfo = php_browser_info();
+	return $browserInfo['version'];
+}
+
+// BROWSERS **********************************************************
+
+function is_firefox ($version=''){
+	$browserInfo = php_browser_info();
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='Firefox') {
+		if ($version == '') :
+			return true;
+		elseif ($browserInfo['majorver'] == $version ) :
+			return true;
+		else :
+			return false;
+		endif;
+	} else {
+		return false;	
+	}	
+}
+
+function is_safari ($version=''){
+	$browserInfo = php_browser_info();
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='Safari') {
+		if ($version == '') :
+			return true;
+		elseif ($browserInfo['majorver'] == $version ) :
+			return true;
+		else :
+			return false;
+		endif;
+	} else {
+		return false;	
+	}
+}
+
+function is_chrome ($version=''){
+	$browserInfo = php_browser_info();
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='Chrome') {
+		if ($version == '') :
+			return true;
+		elseif ($browserInfo['majorver'] == $version ) :
+			return true;
+		else :
+			return false;
+		endif;
+	} else {
+		return false;	
+	}
+}
+
+function is_opera ($version=''){
+	$browserInfo = php_browser_info();
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='Opera') {
+		if ($version == '') :
+			return true;
+		elseif ($browserInfo['majorver'] == $version ) :
+			return true;
+		else :
+			return false;
+		endif;
+	} else {
+		return false;	
+	}	
+}
+
+function is_IE ($version=''){
+	$browserInfo = php_browser_info();
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE') {
+		if ($version == '') :
+			return true;
+		elseif ($browserInfo['majorver'] == $version ) :
+			return true;
+		else :
+			return false;
+		endif;
+	} else {
+		return false;	
+	}
+}
+
+// MOBILE / IPHONE / IPAD **********************************************************
+
 function is_mobile (){
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['ismobiledevice']) && $browserInfo['ismobiledevice']==1)
@@ -151,20 +240,75 @@ function is_mobile (){
 	return false;	
 }
 
-function is_iphone (){
+function is_iphone ($version=''){
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='iPhone')
-		return true;
-	return false;	
+	if(isset($browserInfo['browser']) && $browserInfo['browser']=='iPhone') {
+		if ($version == '') :
+			return true;
+		elseif ($browserInfo['majorver'] == $version ) :
+			return true;
+		else :
+			return false;
+		endif;
+	} else {
+		return false;	
+	}
 }
 
-
-function is_IE (){
+function is_ipad ($version=''){
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE')
-		return true;
-	return false;	
+	if (preg_match("/iPad/", $browserInfo['browser_name_pattern'], $matches)) {
+		if ($version == '') :
+			return true;
+		elseif ($browserInfo['majorver'] == $version ) :
+			return true;
+		else :
+			return false;
+		endif;
+	} else {
+		return false;	
+	}	
 }
+
+function is_ipod (){
+	$browserInfo = php_browser_info();
+	if (preg_match("/iPod/", $browserInfo['browser_name_pattern'], $matches)) {
+		if ($version == '') :
+			return true;
+		elseif ($browserInfo['majorver'] == $version ) :
+			return true;
+		else :
+			return false;
+		endif;
+	} else {
+		return false;	
+	}	
+}
+
+// TEST FOR FEATURES ****************************************************
+
+function browser_supports_javascript() {
+	$browserInfo = php_browser_info();
+	if(isset($browserInfo['javascript']) && $browserInfo['javascript']=='1')
+		return true;
+	return false;		
+}
+
+function browser_supports_cookies() {
+	$browserInfo = php_browser_info();
+	if(isset($browserInfo['cookies']) && $browserInfo['cookies']=='1')
+		return true;
+	return false;		
+}
+
+function browser_supports_css() {
+	$browserInfo = php_browser_info();
+	if(isset($browserInfo['supportscss']) && $browserInfo['supportscss']=='1')
+		return true;
+	return false;		
+}
+
+// IE VERSIONS **********************************************************
 
 function is_IE6 (){
 	$browserInfo = php_browser_info();
@@ -197,20 +341,6 @@ function is_lt_IE7 (){
 function is_lt_IE8 (){
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['browser']) && $browserInfo['browser']=='IE' && (int)$browserInfo['majorver'] < 8)
-		return true;
-	return false;	
-}
-
-function is_firefox (){
-	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='Firefox')
-		return true;
-	return false;	
-}
-
-function is_safari (){
-	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='Safari')
 		return true;
 	return false;	
 }

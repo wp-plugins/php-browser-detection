@@ -1,8 +1,9 @@
 === Plugin Name ===
-Contributors: martythornley
+Contributors: MartyThornley
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11225299
 Tags: php, browser detection, browser, internet explorer, iphone, mobile
-Tested up to: 2.9.1
+Version: 2.0
+Tested up to: 3.0.1
 Stable tag: trunk
 
 PHP Browser Detection is a WordPress plugin used to detect a user's browser.
@@ -12,50 +13,59 @@ PHP Browser Detection is a WordPress plugin used to detect a user's browser.
 PHP Browser Detection is a WordPress plugin used to detect a user's browser. 
 It could be used to send conditional CSS files for Internet Explorer, display different content or custom messages anywhere on the page, or to swap out flash for an image for iPhones.
 
+**Using the Template Tags in your theme:**
 
-**Using the Template Tag in your theme:**
+*Test for specific browsers:*
+
+$version is optional. Include a major version number, a single integer - 3,4,5, etc... Or leave it empty to test for any version.
+
+'<?php if ( is_firefox($version) ) { do stuff }; ?>'
+
+'<?php if ( is_safari($version) ) { do stuff }; ?>'
+
+'<?php if ( is_firefox($version) ) { do stuff }; ?>'
+
+'<?php if ( is_chrome($version) ) { do stuff }; ?>'
+
+'<?php if ( is_opera($version) ) { do stuff }; ?>'
+
+'<?php if ( is_IE($version) ) { do stuff }; ?>'
+
+Check for mobile, iPhone, iPad, iPod, etc...
+
+'<?php if ( is_iphone($version) ) { do stuff }; ?>'
+
+'<?php if ( is_ipad($version) ) { do stuff }; ?>'
+
+'<?php if ( is_ipod($version) ) { do stuff }; ?>'
+
+'<?php if ( is_mobile() ) { do stuff }; ?>'
+
+Check specific versions...
+
+'<?php if ( is_IE6() ) { do stuff }; ?>'
+
+'<?php if ( is_IE7() ) { do stuff }; ?>'
+
+'<?php if ( is_lt_IE6() ) { do stuff }; ?>'
+
+'<?php if ( is_lt_IE7() ) { do stuff }; ?>'
+
+'<?php if ( is_lt_IE8() ) { do stuff }; ?>'
+
+**Or you can get all the info and do what you want with it:**
+
+Get just the name...
+
+`<?php $browserName = get_browser_name (); ?>`
+
+Get the full version number - 3.2, 5.0, etc...
+
+`<?php $browserVersion = get_browser_version (); ?>`
+
+Or get it all in array...
 
 `<?php $browserInfo = php_browser_info (); ?>`
-
-This returns an array of all browser info.
-
-*Some specific uses:*	
-
-To access each part, just call the initial function...
-
-`<?php $browserInfo=php_browser_info(); ?>`
-
-... then use the following as examples:
-
-`<?php $browser = $browserInfo[browser]; ?>`
-
-`<?php $version = $browserInfo[version]; ?>`
-
-`<?php $platform = $browserInfo[platform]; ?>`
-
-Or use the conditional statements:
-
-* is_mobile();
-
-* is_iphone();
-
-* is_firefox();
-
-* is_webkit();
-
-* is_IE();
-
-* is_IE6();
-
-* is_IE7();
-
-* is_lt_IE6();
-
-* is_lt_IE7();
-
-EXAMPLE: 
-
-`<?php if (is_IE) : /*add IE Fixes */;  else : /* do other stuff */ ; endif; ?>`
 
 == Installation ==
 
@@ -63,7 +73,17 @@ EXAMPLE:
 1. Upload entire `php-browser-detection` folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 
+Or with MU / MultiSite:
+
+1. Add 'php-browser-detection.php' and 'php_browser_detection_browscap.ini' to mu-plugins to make sure every blog has it auto activated.
+
 == Changelog ==
+
+= 2.0 =
+
+* Added tests for iPad, iPod, Chrome, Opera
+* Added ability to test for any version for each browser
+* Added ability to get browser name and get browser version
 
 = 1.2 =
 
