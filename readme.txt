@@ -19,39 +19,39 @@ It could be used to send conditional CSS files for Internet Explorer, display di
 
 $version is optional. Include a major version number, a single integer - 3,4,5, etc... Or leave it empty to test for any version.
 
-'<?php if ( is_firefox($version) ) { do stuff }; ?>'
+`<?php if ( is_firefox($version) ) { do stuff }; ?>`
 
-'<?php if ( is_safari($version) ) { do stuff }; ?>'
+`<?php if ( is_safari($version) ) { do stuff }; ?>`
 
-'<?php if ( is_firefox($version) ) { do stuff }; ?>'
+`<?php if ( is_firefox($version) ) { do stuff }; ?>`
 
-'<?php if ( is_chrome($version) ) { do stuff }; ?>'
+`<?php if ( is_chrome($version) ) { do stuff }; ?>`
 
-'<?php if ( is_opera($version) ) { do stuff }; ?>'
+`<?php if ( is_opera($version) ) { do stuff }; ?>`
 
-'<?php if ( is_IE($version) ) { do stuff }; ?>'
+`<?php if ( is_IE($version) ) { do stuff }; ?>`
 
 Check for mobile, iPhone, iPad, iPod, etc...
 
-'<?php if ( is_iphone($version) ) { do stuff }; ?>'
+`<?php if ( is_iphone($version) ) { do stuff }; ?>`
 
-'<?php if ( is_ipad($version) ) { do stuff }; ?>'
+`<?php if ( is_ipad($version) ) { do stuff }; ?>`
 
-'<?php if ( is_ipod($version) ) { do stuff }; ?>'
+`<?php if ( is_ipod($version) ) { do stuff }; ?>`
 
-'<?php if ( is_mobile() ) { do stuff }; ?>'
+`<?php if ( is_mobile() ) { do stuff }; ?>`
 
 Check specific versions...
 
-'<?php if ( is_IE6() ) { do stuff }; ?>'
+`<?php if ( is_IE6() ) { do stuff }; ?>`
 
-'<?php if ( is_IE7() ) { do stuff }; ?>'
+`<?php if ( is_IE7() ) { do stuff }; ?>`
 
-'<?php if ( is_lt_IE6() ) { do stuff }; ?>'
+`<?php if ( is_lt_IE6() ) { do stuff }; ?>`
 
-'<?php if ( is_lt_IE7() ) { do stuff }; ?>'
+`<?php if ( is_lt_IE7() ) { do stuff }; ?>`
 
-'<?php if ( is_lt_IE8() ) { do stuff }; ?>'
+`<?php if ( is_lt_IE8() ) { do stuff }; ?>`
 
 **Or you can get all the info and do what you want with it:**
 
