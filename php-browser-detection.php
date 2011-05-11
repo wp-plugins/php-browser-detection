@@ -3,7 +3,7 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://martythornley.com/downloads/php-browser-info
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 2.0
+Version: 2.1
 Author: Marty Thornley
 Author URI: http://martythornley.com
 */
@@ -242,7 +242,7 @@ function is_mobile (){
 
 function is_iphone ($version=''){
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['browser']) && $browserInfo['browser']=='iPhone') {
+	if( ( isset($browserInfo['browser']) && $browserInfo['browser']=='iPhone' ) || strpos( $_SERVER['HTTP_USER_AGENT'] , 'iPhone') ) {
 		if ($version == '') :
 			return true;
 		elseif ($browserInfo['majorver'] == $version ) :
@@ -257,7 +257,7 @@ function is_iphone ($version=''){
 
 function is_ipad ($version=''){
 	$browserInfo = php_browser_info();
-	if (preg_match("/iPad/", $browserInfo['browser_name_pattern'], $matches)) {
+	if ( preg_match("/iPad/", $browserInfo['browser_name_pattern'], $matches) || strpos( $_SERVER['HTTP_USER_AGENT'] , 'iPad') ) {
 		if ($version == '') :
 			return true;
 		elseif ($browserInfo['majorver'] == $version ) :

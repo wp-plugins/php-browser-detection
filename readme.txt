@@ -82,6 +82,7 @@ Or with MU / MultiSite:
 = 2.1 =
 
 * fixed path info to work with 'mu-plugins' folder, version 2.0 didn't know how to find it.
+* better recognition of iPad and iPhone with iOS 4
 
 = 2.0 =
 
