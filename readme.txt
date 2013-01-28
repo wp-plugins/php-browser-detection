@@ -3,7 +3,7 @@ Contributors: MartyThornley, mindshare
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11225299
 Tags: php, browser detection, browser, internet explorer, iphone, mobile
 Version: 2.1.3
-Tested up to: 3.3.1
+Tested up to: 3.5.1
 Stable tag: trunk
 
 PHP Browser Detection is a WordPress plugin used to detect a user's browser.
