@@ -1,12 +1,12 @@
 === Plugin Name ===
-Contributors: MartyThornley, mindshare
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11225299
+Contributors: mindshare, MartyThornley
+Donate link: http://mind.sh/are/donate/
 Tags: php, browser detection, browser, internet explorer, iphone, mobile, browscap, detection
-Version: 2.2
-Tested up to: 3.6-beta1
+Version: 2.2.1
+Tested up to: 3.6.1
 Stable tag: 2.2
 
-PHP Browser Detection is a WordPress plugin used to detect a user's browser. This version 2.2 is a fairly big update so please report any bugs.
+PHP Browser Detection is a WordPress plugin used to detect a user's browser. Please report any bugs on the support forums.
 
 == Description ==
 
@@ -40,16 +40,16 @@ $version is optional. Include a major version number, a single integer - 3,4,5, 
 
 `<?php if(is_mobile()) { /* do stuff */ }; ?>`
 
-*Check for greater than / less then a specific version...*
+*Check for greater than / less than a specific version...*
 
 Less than or equal to Firefox 19:
-`<?php if(is_firefox() && get_browser_version() >= 19) { /* do stuff */ }; ?>`
+`<?php if(is_firefox() && get_browser_version() <= 19) { /* do stuff */ }; ?>`
 
 Less than or equal to IE 10:
-`<?php if(is_ie() && get_browser_version() < 10) { /* do stuff */ }; ?>`
+`<?php if(is_ie() && get_browser_version() <= 10) { /* do stuff */ }; ?>`
 
 Greater than or equal to Safari 4:
-`<?php if(is_safari() && get_browser_version() > 4) { /* do stuff */ }; ?>`
+`<?php if(is_safari() && get_browser_version() >= 4) { /* do stuff */ }; ?>`
 
 these are just a few examples, but this syntax will work for any browser or version.
 
@@ -86,6 +86,11 @@ Or with MU / MultiSite:
 1. Add `php-browser-detection.php` and `php_browser_detection_browscap.ini` to `mu-plugins` to make sure every blog has it auto activated.
 
 == Changelog ==
+
+= 2.2.1 =
+* updated php_browser_detection_browscap.ini to version 5020
+* bugfixes
+* additional testing and QA
 
 = 2.2 =
 * updated php_browser_detection_browscap.ini to version 5020 (custom version)

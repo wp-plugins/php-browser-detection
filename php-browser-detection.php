@@ -3,77 +3,39 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://wordpress.org/extend/plugins/php-browser-detection/
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 2.2
-Author: Marty Thornley
-Author URI: http://martythornley.com
+Version: 2.2.1
+Author: Mindshare Studios, Inc.
+Author URI: http://mind.sh/are
+License: GNU General Public License v3
+License URI: license.txt
+Text Domain: php-browser-detection
 */
 
-/*
+/**
+ *
+ * Copyright 2009-2013 Marty Thornley / Mindshare Studios, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License, version 3, as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-
-/* CREDITS
-
-	- Original plugin development by 2009 Marty Thornley (email: marty@martythornley.com)
-	- Maintained by Mindshare Studios, Inc. (email: info@mindsharestudios.com)
-	- 'php_browser_detection_browscap.ini' is the 'full_php_browscap.ini' from http://tempdownloads.browserscap.com, orignianlly by Gary Keith
-
-*/
-
-/* USAGE
-
-GET INFO:
-
-php_browser_info() - returns array of all info
-get_browser_name() - returns just the name
-get_browser_version() - returns version and minor version (3.2)
-
-CONDITIONAL STATEMENTS INCLUDED:
-
-$version is optional. Include a number to test a specific one, or leave blank to test any for any version.
-
-is_firefox($version)
-is_safari($version)
-is_chrome($version)
-is_opera($version)
-is_ie($version)
-
-is_iphone($version)
-is_ipad($version)
-is_ipod($version)
-
-is_mobile()
-
-is_ie(6)
-is_ie(7)
-
-is_lt_IE(6)
-is_lt_IE(7)
-is_lt_IE(8)
-
-browser_supports_javascript()
-browser_supports_cookies()
-browser_supports_css()
-
-
-EXAMPLE:
-
-if(is_ie()) :  DO SOMETHING ; else :  DO OTHER STUFF; endif;
-
-*/
+// add support for Windows systems without PHP's fnmatch()
+if(!function_exists('fnmatch')) {
+	function fnmatch($pattern, $string) {
+		return preg_match("#^".strtr(preg_quote($pattern, '#'), array('\*' => '.*', '\?' => '.'))."$#i", $string);
+	}
+}
 
 /**
  * Returns array of all browser info.
@@ -88,7 +50,7 @@ function php_browser_info() {
 	$x = dirname(__FILE__);
 	$browscap = $x.'/php_browser_detection_browscap.ini';
 	if(!is_file(realpath($browscap))) {
-		return array('error' => 'No browscap.ini file founded.');
+		return array('error' => 'No php_browser_detection_browscap.ini file found.');
 	}
 	$agent = $agent ? $agent : $_SERVER['HTTP_USER_AGENT'];
 	$yu = array();
@@ -107,7 +69,7 @@ function php_browser_info() {
 			$pat = preg_replace($q_s, $q_r, $k);
 			$yu['browser_name_regex'] = strtolower("^$pat$");
 			foreach($brows as $g => $r) {
-				if($t['Parent'] == $g) {
+				if(isset($t['Parent']) && $t['Parent'] == $g) {
 					foreach($brows as $a => $b) {
 						if($r['Parent'] == $a) {
 							$yu = array_merge($yu, $b, $r, $t);
@@ -143,7 +105,7 @@ function get_browser_name() {
 	} elseif(is_chrome()) {
 		return 'Chrome';
 	} elseif(is_ie()) {
-		return 'Internet Explorer'; // The Root of All Evil
+		return 'Internet Explorer'; // The browser to download another browser with
 	} elseif(is_ipad()) {
 		return 'iPad';
 	} elseif(is_ipod()) {
@@ -238,11 +200,13 @@ function is_chrome($version = '') {
 function is_opera($version = '') {
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['browser']) && $browserInfo['browser'] == 'Opera') {
-		if($version == '') :
-			return TRUE; elseif($browserInfo['majorver'] == $version) :
-			return TRUE; else :
+		if($version == '') {
+			return TRUE;
+		} elseif($browserInfo['majorver'] == $version) {
+			return TRUE;
+		} else {
 			return FALSE;
-		endif;
+		}
 	} else {
 		return FALSE;
 	}
@@ -275,8 +239,10 @@ function is_ie($version = '') {
  */
 function is_mobile() {
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['ismobiledevice']) && $browserInfo['ismobiledevice'] == (bool) 1) {
-		return TRUE;
+	if(isset($browserInfo['ismobiledevice'])) {
+		if($browserInfo['ismobiledevice'] == 1 || $browserInfo['ismobiledevice'] == "true") {
+			return TRUE;
+		}
 	}
 	return FALSE;
 }
@@ -348,8 +314,10 @@ function is_ipod($version = '') {
  */
 function browser_supports_javascript() {
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['javascript']) && $browserInfo['javascript'] == (bool) 1) {
-		return TRUE;
+	if(isset($browserInfo['javascript'])) {
+		if($browserInfo['javascript'] == 1 || $browserInfo['javascript'] == "true") {
+			return TRUE;
+		}
 	}
 	return FALSE;
 }
@@ -361,8 +329,10 @@ function browser_supports_javascript() {
  */
 function browser_supports_cookies() {
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['cookies']) && $browserInfo['cookies'] == (bool) 1) {
-		return TRUE;
+	if(isset($browserInfo['cookies'])) {
+		if($browserInfo['cookies'] == 1 || $browserInfo['cookies'] == "true") {
+			return TRUE;
+		}
 	}
 	return FALSE;
 }
@@ -374,8 +344,15 @@ function browser_supports_cookies() {
  */
 function browser_supports_css() {
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['supportscss']) && $browserInfo['supportscss'] == (bool) 1) {
-		return TRUE;
+	if(isset($browserInfo['supportscss'])) {
+		if($browserInfo['supportscss'] == 1 || $browserInfo['supportscss'] == "true") {
+			return TRUE;
+		}
+	}
+	if(isset($browserInfo['cssversion'])) {
+		if($browserInfo['cssversion'] >= 1) {
+			return TRUE;
+		}
 	}
 	return FALSE;
 }
@@ -551,12 +528,12 @@ function php_browser_detection_plugin_links($data, $page) {
 			$data,
 			array(
 				 sprintf(
-					 'and by <a href="http://mind.sh/are/" target="_blank">%s</a>',
-					 esc_html__('Mindshare Studios, Inc.', 'php-browser-detection')
+					 'and by <a href="http://martythornley.com/" target="_blank">%s</a>',
+					 esc_html__('Marty Thornley', 'php-browser-detection')
 				 ),
 				 sprintf(
-					 '<a href="http://mind.sh/are/donate/" target="_blank">%s</a>',
-					 esc_html__('Support future development', 'php-browser-detection')
+					 '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11225299" target="_blank">%s</a>',
+					 esc_html__('Donate', 'php-browser-detection')
 				 )
 			)
 		);
