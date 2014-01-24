@@ -2,7 +2,7 @@
 Contributors: mindshare, MartyThornley
 Donate link: http://mind.sh/are/donate/
 Tags: php, browser detection, browser, internet explorer, iphone, mobile, browscap, detection
-Version: 2.2.2
+Version: 2.2.3
 Tested up to: 3.8.1
 Stable tag: 2.2.2
 
@@ -81,11 +81,10 @@ Get the full version number - 3.2, 5.0, etc...
 1. Upload entire `php-browser-detection` folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 
-Or with MU / MultiSite:
-
-1. Add `php-browser-detection.php` and `php_browser_detection_browscap.ini` to `mu-plugins` to make sure every blog has it auto activated.
-
 == Changelog ==
+
+= 2.2.3 =
+* updated readme
 
 = 2.2.2 =
 * updated php_browser_detection_browscap.ini to version 5022

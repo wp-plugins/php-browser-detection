@@ -3,7 +3,7 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://wordpress.org/extend/plugins/php-browser-detection/
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 2.2.2
+Version: 2.2.3
 Author: Mindshare Studios, Inc.
 Author URI: http://mind.sh/are
 License: GNU General Public License v3
