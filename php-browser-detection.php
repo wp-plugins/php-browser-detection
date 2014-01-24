@@ -3,7 +3,7 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://wordpress.org/extend/plugins/php-browser-detection/
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 2.2.1
+Version: 2.2.2
 Author: Mindshare Studios, Inc.
 Author URI: http://mind.sh/are
 License: GNU General Public License v3
@@ -13,7 +13,7 @@ Text Domain: php-browser-detection
 
 /**
  *
- * Copyright 2009-2013 Marty Thornley / Mindshare Studios, Inc.
+ * Copyright 2009-2014 Marty Thornley / Mindshare Studios, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 3, as
@@ -84,7 +84,11 @@ function php_browser_info() {
 			break;
 		}
 	}
-	return $hu;
+	if(isset($hu)) {
+		return $hu;
+	} else {
+		return FALSE;
+	}
 }
 
 /**
@@ -140,8 +144,10 @@ function is_firefox($version = '') {
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['browser']) && $browserInfo['browser'] == 'Firefox') {
 		if($version == '') :
-			return TRUE; elseif($browserInfo['majorver'] == $version) :
-			return TRUE; else :
+			return TRUE;
+		elseif($browserInfo['majorver'] == $version) :
+			return TRUE;
+		else :
 			return FALSE;
 		endif;
 	} else {
@@ -161,8 +167,10 @@ function is_safari($version = '') {
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['browser']) && $browserInfo['browser'] == 'Safari') {
 		if($version == '') :
-			return TRUE; elseif($browserInfo['majorver'] == $version) :
-			return TRUE; else :
+			return TRUE;
+		elseif($browserInfo['majorver'] == $version) :
+			return TRUE;
+		else :
 			return FALSE;
 		endif;
 	} else {
@@ -181,8 +189,10 @@ function is_chrome($version = '') {
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['browser']) && $browserInfo['browser'] == 'Chrome') {
 		if($version == '') :
-			return TRUE; elseif($browserInfo['majorver'] == $version) :
-			return TRUE; else :
+			return TRUE;
+		elseif($browserInfo['majorver'] == $version) :
+			return TRUE;
+		else :
 			return FALSE;
 		endif;
 	} else {
@@ -223,8 +233,10 @@ function is_ie($version = '') {
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['browser']) && $browserInfo['browser'] == 'IE') {
 		if($version == '') :
-			return TRUE; elseif($browserInfo['majorver'] == $version) :
-			return TRUE; else :
+			return TRUE;
+		elseif($browserInfo['majorver'] == $version) :
+			return TRUE;
+		else :
 			return FALSE;
 		endif;
 	} else {
@@ -258,8 +270,10 @@ function is_iphone($version = '') {
 	$browserInfo = php_browser_info();
 	if((isset($browserInfo['browser']) && $browserInfo['browser'] == 'iPhone') || strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')) {
 		if($version == '') :
-			return TRUE; elseif($browserInfo['majorver'] == $version) :
-			return TRUE; else :
+			return TRUE;
+		elseif($browserInfo['majorver'] == $version) :
+			return TRUE;
+		else :
 			return FALSE;
 		endif;
 	} else {
@@ -278,8 +292,10 @@ function is_ipad($version = '') {
 	$browserInfo = php_browser_info();
 	if(preg_match("/iPad/", $browserInfo['browser_name_pattern'], $matches) || strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
 		if($version == '') :
-			return TRUE; elseif($browserInfo['majorver'] == $version) :
-			return TRUE; else :
+			return TRUE;
+		elseif($browserInfo['majorver'] == $version) :
+			return TRUE;
+		else :
 			return FALSE;
 		endif;
 	} else {
@@ -298,8 +314,10 @@ function is_ipod($version = '') {
 	$browserInfo = php_browser_info();
 	if(preg_match("/iPod/", $browserInfo['browser_name_pattern'], $matches)) {
 		if($version == '') :
-			return TRUE; elseif($browserInfo['majorver'] == $version) :
-			return TRUE; else :
+			return TRUE;
+		elseif($browserInfo['majorver'] == $version) :
+			return TRUE;
+		else :
 			return FALSE;
 		endif;
 	} else {
@@ -377,6 +395,7 @@ function is_ie6() {
  * @deprecated Use the future-proof syntax instead of this function: if(is_ie(7)) { }
  */
 function is_ie7() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	return is_ie(7);
 }
 
@@ -389,6 +408,7 @@ function is_ie7() {
  * @deprecated Use the future-proof syntax instead of this function: if(is_ie(8)) { }
  */
 function is_ie8() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	return is_ie(8);
 }
 
@@ -401,6 +421,7 @@ function is_ie8() {
  * @deprecated Use the future-proof syntax instead of this function: if(is_ie(9)) { }
  */
 function is_ie9() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	return is_ie(9);
 }
 
@@ -413,6 +434,7 @@ function is_ie9() {
  * @deprecated Use the future-proof syntax instead of this function: if(is_ie(10)) { }
  */
 function is_ie10() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	return is_ie(10);
 }
 
@@ -425,6 +447,7 @@ function is_ie10() {
  * @deprecated Use the future-proof syntax instead of this function: if(is_ie() && get_browser_version() < 6) { }
  */
 function is_lt_IE6() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	if(is_ie() && get_browser_version() < 6) {
 		return TRUE;
 	} else {
@@ -440,6 +463,7 @@ function is_lt_IE6() {
  * @deprecated Use the future-proof syntax instead of this function: if(is_ie() && get_browser_version() < 7) { }
  */
 function is_lt_IE7() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	if(is_ie() && get_browser_version() < 7) {
 		return TRUE;
 	} else {
@@ -455,6 +479,7 @@ function is_lt_IE7() {
  * @deprecated Use the future-proof syntax instead of this function: if(is_ie() && get_browser_version() < 8) { }
  */
 function is_lt_IE8() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	if(is_ie() && get_browser_version() < 8) {
 		return TRUE;
 	} else {
@@ -470,6 +495,7 @@ function is_lt_IE8() {
  * @deprecated Use the future-proof syntax instead of this function: if(is_ie() && get_browser_version() < 9) { }
  */
 function is_lt_IE9() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	if(is_ie() && get_browser_version() < 9) {
 		return TRUE;
 	} else {
@@ -486,6 +512,7 @@ function is_lt_IE9() {
  *
  */
 function is_lt_IE10() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	if(is_ie() && get_browser_version() < 10) {
 		return TRUE;
 	} else {
@@ -502,6 +529,7 @@ function is_lt_IE10() {
  *
  */
 function is_lt_IE11() {
+	_deprecated_function(__FUNCTION__, '3.6', 'is_ie');
 	if(is_ie() && get_browser_version() < 11) {
 		return TRUE;
 	} else {
@@ -527,14 +555,14 @@ function php_browser_detection_plugin_links($data, $page) {
 		$data = array_merge(
 			$data,
 			array(
-				 sprintf(
-					 'and by <a href="http://martythornley.com/" target="_blank">%s</a>',
-					 esc_html__('Marty Thornley', 'php-browser-detection')
-				 ),
-				 sprintf(
-					 '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11225299" target="_blank">%s</a>',
-					 esc_html__('Donate', 'php-browser-detection')
-				 )
+				sprintf(
+					'and by <a href="http://martythornley.com/" target="_blank">%s</a>',
+					esc_html__('Marty Thornley', 'php-browser-detection')
+				),
+				sprintf(
+					'<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11225299" target="_blank">%s</a>',
+					esc_html__('Donate', 'php-browser-detection')
+				)
 			)
 		);
 	}

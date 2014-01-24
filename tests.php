@@ -7,8 +7,8 @@
  *
  * @created 4/9/13 4:00 PM
  * @author Mindshare Studios, Inc.
- * @copyright Copyright (c) 2013
- * @link http://www.mindsharelabs.com/documentation/
+ * @copyright Copyright (c) 2014
+ * @link http://www.mindsharelabs.com/kb/
  * 
  */
 include_once('../../../wp-blog-header.php');
@@ -16,7 +16,7 @@ $q = new WP_Query('page_id=2');
 get_header();
 ?>
 <div id="primary">
-	<div id="content" role="main">
+	<div id="content" role="main" class="site-content">
 		<?php if($q->have_posts()) : ?>
 			<?php while($q->have_posts()) : $q->the_post(); ?>
 
@@ -136,40 +136,22 @@ get_header();
 				<div style="padding:5px; margin:10px 0; border-radius:5px; background:#E6E6E6">
 					<p>Test for specific versions of a browser:</p>
 					<?php
-					echo '<pre>if(is_ie(7)) = ';
-					if(is_ie(7)) {
+					echo '<pre>if(is_ie(11)) = ';
+					if(is_ie(11)) {
 						echo TRUE;
 					};
 					echo '</pre>';
 
-					echo '<pre>if(is_firefox(20)) = ';
-					if(is_firefox(20)) {
+					echo '<pre>if(is_firefox(24)) = ';
+					if(is_firefox(24)) {
 						echo TRUE;
 					};
-					?>
-				</div>
-
-				<div style="padding:5px; margin:10px 0; border-radius:5px; background:#E6E6E6">
-					<p>THESE ARE DEPRECTATED AND MAY NOT BE MAINTAINED IN FUTURE RELEASES. USE THE ALTERNATE SYNTAX ABOVE. Test for specific versions of IE:</p>
-					<?php
-					echo '<pre>is_ie6() = ';
-					echo is_ie6();
 					echo '</pre>';
 
-					echo '<pre>is_ie7() = ';
-					echo is_ie7();
-					echo '</pre>';
-
-					echo '<pre>is_ie8() = ';
-					echo is_ie8();
-					echo '</pre>';
-
-					echo '<pre>is_ie9() = ';
-					echo is_ie9();
-					echo '</pre>';
-
-					echo '<pre>is_ie10() = ';
-					echo is_ie10();
+					echo '<pre>if(is_chrome(32)) = ';
+					if(is_chrome(32)) {
+						echo TRUE;
+					};
 					echo '</pre>';
 					?>
 				</div>
