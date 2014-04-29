@@ -10,6 +10,11 @@ PHP Browser Detection is a WordPress plugin used to detect a user's browser. Ple
 
 == Description ==
 
+NEW HIGHLY IMPROVED BETA VERSION AVAILABLE. PLEASE TEST (NOT YET READY FOR PRODUCTION), DOWNLOAD HERE:
+http://downloads.wordpress.org/plugin/php-browser-detection.zip
+
+The new version add support for is_tablet() as well as automatically updating and caching the browscap.ini database.
+
 PHP Browser Detection is a WordPress plugin used to detect a user's browser. It can be used to send conditional CSS files for Internet Explorer, display different content or custom messages anywhere on the page, or to swap out Flash for an image for iPhones.
 
 **Using the Template Tags in your theme:**
@@ -30,7 +35,9 @@ $version is optional. Include a major version number, a single integer - 3,4,5, 
 
 `<?php if(is_ie($version)) { /* do stuff */ }; ?>`
 
-*Check for mobile, iPhone, iPad, iPod, etc...*
+*Check for mobile, tablet, iPhone, iPad, iPod, etc...*
+
+`<?php if(is_tablet()) { /* do stuff */ }; ?>`
 
 `<?php if(is_iphone($version)) { /* do stuff */ }; ?>`
 
