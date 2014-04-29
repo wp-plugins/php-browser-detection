@@ -17,6 +17,7 @@ Text Domain: php-browser-detection
  *
  * Based on code originally by Marty Thornley
  * Since version 3 making use of the BROWSCAP-PHP library by Garet Jax
+ *
  * @link https://github.com/browscap/browscap-php
  *
  * This program is free software; you can redistribute it and/or modify
@@ -33,7 +34,6 @@ Text Domain: php-browser-detection
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 
 if(!defined('PBD_DIR_PATH')) {
 	define('PBD_DIR_PATH', plugin_dir_path(__FILE__)); // /.../wp-content/plugins/php-browser-detection/
@@ -89,13 +89,13 @@ function get_browser_version() {
 function is_firefox($version = '') {
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['Browser']) && $browserInfo['Browser'] == 'Firefox') {
-		if($version == '') :
+		if($version == '') {
 			return TRUE;
-		elseif($browserInfo['MajorVer'] == $version) :
+		} elseif($browserInfo['MajorVer'] == $version) {
 			return TRUE;
-		else :
+		} else {
 			return FALSE;
-		endif;
+		}
 	} else {
 		return FALSE;
 	}
@@ -134,13 +134,13 @@ function is_safari($version = '') {
 function is_chrome($version = '') {
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['Browser']) && $browserInfo['Browser'] == 'Chrome') {
-		if($version == '') :
+		if($version == '') {
 			return TRUE;
-		elseif($browserInfo['MajorVer'] == $version) :
+		} elseif($browserInfo['MajorVer'] == $version) {
 			return TRUE;
-		else :
+		} else {
 			return FALSE;
-		endif;
+		}
 	} else {
 		return FALSE;
 	}
@@ -179,13 +179,13 @@ function is_opera($version = '') {
 function is_ie($version = '') {
 	$browserInfo = php_browser_info();
 	if(isset($browserInfo['Browser']) && $browserInfo['Browser'] == 'IE') {
-		if($version == '') :
+		if($version == '') {
 			return TRUE;
-		elseif($browserInfo['MajorVer'] == $version) :
+		} elseif($browserInfo['MajorVer'] == $version) {
 			return TRUE;
-		else :
+		} else {
 			return FALSE;
-		endif;
+		}
 	} else {
 		return FALSE;
 	}
@@ -231,13 +231,13 @@ function is_mobile() {
 function is_iphone($version = '') {
 	$browserInfo = php_browser_info();
 	if((isset($browserInfo['Browser']) && $browserInfo['Browser'] == 'iPhone') || strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone')) {
-		if($version == '') :
+		if($version == '') {
 			return TRUE;
-		elseif($browserInfo['MajorVer'] == $version) :
+		} elseif($browserInfo['MajorVer'] == $version) {
 			return TRUE;
-		else :
+		} else {
 			return FALSE;
-		endif;
+		}
 	} else {
 		return FALSE;
 	}
@@ -253,13 +253,13 @@ function is_iphone($version = '') {
 function is_ipad($version = '') {
 	$browserInfo = php_browser_info();
 	if(preg_match("/iPad/", $browserInfo['browser_name_pattern'], $matches) || strpos($_SERVER['HTTP_USER_AGENT'], 'iPad')) {
-		if($version == '') :
+		if($version == '') {
 			return TRUE;
-		elseif($browserInfo['MajorVer'] == $version) :
+		} elseif($browserInfo['MajorVer'] == $version) {
 			return TRUE;
-		else :
+		} else {
 			return FALSE;
-		endif;
+		}
 	} else {
 		return FALSE;
 	}
@@ -275,13 +275,13 @@ function is_ipad($version = '') {
 function is_ipod($version = '') {
 	$browserInfo = php_browser_info();
 	if(preg_match("/iPod/", $browserInfo['browser_name_pattern'], $matches)) {
-		if($version == '') :
+		if($version == '') {
 			return TRUE;
-		elseif($browserInfo['MajorVer'] == $version) :
+		} elseif($browserInfo['MajorVer'] == $version) {
 			return TRUE;
-		else :
+		} else {
 			return FALSE;
-		endif;
+		}
 	} else {
 		return FALSE;
 	}
@@ -324,11 +324,6 @@ function browser_supports_cookies() {
  */
 function browser_supports_css() {
 	$browserInfo = php_browser_info();
-	if(isset($browserInfo['supportscss'])) {
-		if($browserInfo['supportscss'] == 1 || $browserInfo['supportscss'] == "true") {
-			return TRUE;
-		}
-	}
 	if(isset($browserInfo['CssVersion'])) {
 		if($browserInfo['CssVersion'] >= 1) {
 			return TRUE;

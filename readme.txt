@@ -23,50 +23,48 @@ PHP Browser Detection is a WordPress plugin used to detect a user's browser. It 
 
 $version is optional. Include a major version number, a single integer - 3,4,5, etc... Or leave it empty to test for any version.
 
-`<?php if(is_firefox($version)) { /* do stuff */ }; ?>`
+`<?php if(is_firefox($version)) { /* your code here */ }; ?>`
 
-`<?php if(is_safari($version)) { /* do stuff */ }; ?>`
+`<?php if(is_safari($version)) { /* your code here */ }; ?>`
 
-`<?php if(is_firefox($version)) { /* do stuff */ }; ?>`
+`<?php if(is_chrome($version)) { /* your code here */ }; ?>`
 
-`<?php if(is_chrome($version)) { /* do stuff */ }; ?>`
+`<?php if(is_opera($version)) { /* your code here */ }; ?>`
 
-`<?php if(is_opera($version)) { /* do stuff */ }; ?>`
-
-`<?php if(is_ie($version)) { /* do stuff */ }; ?>`
+`<?php if(is_ie($version)) { /* your code here */ }; ?>`
 
 *Check for mobile, tablet, iPhone, iPad, iPod, etc...*
 
-`<?php if(is_tablet()) { /* do stuff */ }; ?>`
+`<?php if(is_tablet()) { /* your code here */ }; ?>`
 
-`<?php if(is_iphone($version)) { /* do stuff */ }; ?>`
+`<?php if(is_iphone($version)) { /* your code here */ }; ?>`
 
-`<?php if(is_ipad($version)) { /* do stuff */ }; ?>`
+`<?php if(is_ipad($version)) { /* your code here */ }; ?>`
 
-`<?php if(is_ipod($version)) { /* do stuff */ }; ?>`
+`<?php if(is_ipod($version)) { /* your code here */ }; ?>`
 
-`<?php if(is_mobile()) { /* do stuff */ }; ?>`
+`<?php if(is_mobile()) { /* your code here */ }; ?>`
 
 *Check for greater than / less than a specific version...*
 
 Less than or equal to Firefox 19:
-`<?php if(is_firefox() && get_browser_version() <= 19) { /* do stuff */ }; ?>`
+`<?php if(is_firefox() && get_browser_version() <= 19) { /* your code here */ }; ?>`
 
 Less than or equal to IE 10:
-`<?php if(is_ie() && get_browser_version() <= 10) { /* do stuff */ }; ?>`
+`<?php if(is_ie() && get_browser_version() <= 10) { /* your code here */ }; ?>`
 
 Greater than or equal to Safari 4:
-`<?php if(is_safari() && get_browser_version() >= 4) { /* do stuff */ }; ?>`
+`<?php if(is_safari() && get_browser_version() >= 4) { /* your code here */ }; ?>`
 
 these are just a few examples, but this syntax will work for any browser or version.
 
 *Check specific versions...*
 
 Is the browser IE6?
-`<?php if(is_ie(6)) { /* do stuff */ }; ?>`
+`<?php if(is_ie(6)) { /* your code here */ }; ?>`
 
 Is the browser IE10?
-`<?php if(is_ie(10)) { /* do stuff */ }; ?>`
+`<?php if(is_ie(10)) { /* your code here */ }; ?>`
 
 **Or you can get all the info and do what you want with it:**
 
@@ -89,6 +87,13 @@ Get the full version number - 3.2, 5.0, etc...
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+
+= 3.0 =
+* Browscap database auto-updates!
+* Browscap database caching
+* Added is_tablet()
+* Refactored plugin structure
+* Now utilizes Browser Capabilities PHP Project by Garet Jax
 
 = 2.2.4 =
 * updated php_browser_detection_browscap.ini to version 5027
