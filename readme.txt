@@ -2,9 +2,9 @@
 Contributors: mindshare, MartyThornley
 Donate link: http://mind.sh/are/donate/
 Tags: php, browser detection, browser, internet explorer, iphone, mobile, browscap, detection
-Version: 2.2.3
-Tested up to: 3.8.1
-Stable tag: 2.2.3
+Version: 2.2.4
+Tested up to: 3.9
+Stable tag: 2.2.4
 
 PHP Browser Detection is a WordPress plugin used to detect a user's browser. Please report any bugs on the support forums.
 
@@ -82,6 +82,9 @@ Get the full version number - 3.2, 5.0, etc...
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+
+= 2.2.4 =
+* updated php_browser_detection_browscap.ini to version 5027
 
 = 2.2.3 =
 * updated readme
