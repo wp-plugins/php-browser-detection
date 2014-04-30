@@ -156,7 +156,7 @@ function is_chrome($version = '') {
 function is_opera($version = '') {
 	$browserInfo = php_browser_info();
 
-	if(isset($browserInfo['Browser']) && $browserInfo['Browser'] == 'Opera') {
+	if(isset($browserInfo['Browser']) && (strpos($browserInfo['Browser'], 'Opera') !== FALSE)) {
 		if($version == '') {
 			return TRUE;
 		} elseif($browserInfo['MajorVer'] == $version) {
