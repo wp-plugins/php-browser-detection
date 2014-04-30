@@ -22,16 +22,16 @@ get_header();
 				<?php if($q->have_posts()) : ?>
 					<?php while($q->have_posts()) : $q->the_post(); ?>
 
-						<h1><?php the_title(); ?></h1>
+						<h1>PHP Browser Detection Tests<?php //the_title(); ?></h1>
 
 						<?php //the_content(); ?>
 
 						<div style="padding:5px; margin:10px 0; border-radius:5px; background:#E6E6E6">
 							<p>Get all browser info:</p>
 							<?php
-							$browserInfo = php_browser_info();
+							$browser_info = php_browser_info();
 							echo '<pre>php_browser_info() = ';
-							print_r($browserInfo);
+							print_r($browser_info);
 							echo '</pre>';
 							?>
 						</div>
@@ -82,6 +82,11 @@ get_header();
 						<div style="padding:5px; margin:10px 0; border-radius:5px; background:#E6E6E6">
 							<p>Test for mobile/iphone/ipad:</p>
 							<?php
+							echo '<pre>is_desktop() = ';
+							echo is_desktop();
+							echo '</pre>';
+
+
 							echo '<pre>is_tablet() = ';
 							echo is_tablet();
 							echo '</pre>';

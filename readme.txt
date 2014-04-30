@@ -10,14 +10,11 @@ PHP Browser Detection is a WordPress plugin used to detect a user's browser. Ple
 
 == Description ==
 
-NEW HIGHLY IMPROVED BETA VERSION AVAILABLE. PLEASE TEST (NOT YET READY FOR PRODUCTION), DOWNLOAD HERE:
-http://downloads.wordpress.org/plugin/php-browser-detection.zip
-
-The new version add support for is_tablet() as well as automatically updating and caching the browscap.ini database.
+Version 3.0 adds support for is_tablet(), is_desktop(), and is_browser() as well as automatically updating and caching the browscap.ini database and numerous bug fixes and code improvements.
 
 PHP Browser Detection is a WordPress plugin used to detect a user's browser. It can be used to send conditional CSS files for Internet Explorer, display different content or custom messages anywhere on the page, or to swap out Flash for an image for iPhones.
 
-**Using the Template Tags in your theme:**
+**Template Tags:**
 
 *Test for specific browsers:*
 
@@ -33,7 +30,11 @@ $version is optional. Include a major version number, a single integer - 3,4,5, 
 
 `<?php if(is_ie($version)) { /* your code here */ }; ?>`
 
+`<?php if(is_browser($name, $version)) { /* your code here */ }; ?>`
+
 *Check for mobile, tablet, iPhone, iPad, iPod, etc...*
+
+`<?php if(is_desktop()) { /* your code here */ }; ?>`
 
 `<?php if(is_tablet()) { /* your code here */ }; ?>`
 
@@ -70,15 +71,15 @@ Is the browser IE10?
 
 *Get just the name...*
 
-`<?php $browserName = get_browser_name(); ?>`
+`<?php $browser_name = get_browser_name(); ?>`
 
 Get the full version number - 3.2, 5.0, etc...
 
-`<?php $browserVersion = get_browser_version(); ?>`
+`<?php $browser_version = get_browser_version(); ?>`
 
 *Or get it all in array...*
 
-`<?php $browserInfo = php_browser_info(); ?>`
+`<?php $browser_info = php_browser_info(); ?>`
 
 == Installation ==
 
@@ -89,9 +90,13 @@ Get the full version number - 3.2, 5.0, etc...
 == Changelog ==
 
 = 3.0 =
-* Browscap database auto-updates!
-* Browscap database caching
+* Browscap.ini database auto-updates!
+* Browscap database caching!
 * Added is_tablet()
+* Added is_desktop()
+* Added is_browser()
+* Various detection fixes (incl. Opera Mini and IE Mobile)
+* Updated tests
 * Refactored plugin structure
 * Now utilizes Browser Capabilities PHP Project by Garet Jax
 
