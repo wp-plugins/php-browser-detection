@@ -87,6 +87,12 @@ Get the full version number - 3.2, 5.0, etc...
 1. Upload entire `php-browser-detection` folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 
+== Frequently Asked Questions ==
+
+= I got a fatal error on activation. What gives? =
+
+This most likely means your web host is running a very old version of PHP. As of version 3.0, only PHP 5.3 and above are supported. You can ask your host to upgrade PHP for you.
+
 == Changelog ==
 
 = 3.0 =
