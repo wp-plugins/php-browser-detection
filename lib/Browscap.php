@@ -2,6 +2,8 @@
 
 namespace phpbrowscap;
 
+use \Exception as BaseException;
+
 /**
  * Browscap.ini parsing class with caching and update capabilities
  *
@@ -41,7 +43,7 @@ class Browscap
 	/**
 	 * Current version of the class.
 	 */
-	const VERSION = '2.0b';
+	const VERSION = '2.0';
 
 	const CACHE_FILE_VERSION = '2.0b';
 
@@ -66,6 +68,7 @@ class Browscap
 	 */
 	const REGEX_DELIMITER = '@';
 	const REGEX_MODIFIERS = 'i';
+
 	const COMPRESSION_PATTERN_START = '@';
 	const COMPRESSION_PATTERN_DELIMITER = '|';
 
@@ -99,11 +102,12 @@ class Browscap
 	 * is MINIMAL, so there is no reason to use the standard file whatsoever. Either go for light,
 	 * which is blazing fast, or get the full one. (note: light version doesn't work, a fix is on its way)
 	 */
-	public $remoteIniUrl = 'http://browscap.org/stream?q=Full_PHP_BrowsCapINI';
+	public $remoteIniUrl = 'http://browscap.org/stream?q=PHP_BrowsCapINI';
+	//public $remoteIniUrl = 'http://browscap.org/stream?q=Full_PHP_BrowsCapINI';
 	public $remoteVerUrl = 'http://browscap.org/version';
 	public $timeout = 5;
-	public $updateInterval = 432000; // 5 days
-	public $errorInterval = 7200; // 2 hours
+	public $updateInterval = 432000;  // 5 days
+	public $errorInterval = 7200;  // 2 hours
 	public $doAutoUpdate = true;
 	public $updateMethod = null;
 
@@ -207,7 +211,6 @@ class Browscap
 	 * if needed updated the definitions
 	 *
 	 * @param string $cache_dir
-	 *
 	 * @throws Exception
 	 */
 	public function __construct($cache_dir)
@@ -216,35 +219,33 @@ class Browscap
 		date_default_timezone_set(date_default_timezone_get());
 
 		if (!isset($cache_dir)) {
-			throw new Exception('You have to provide a path to read/store the browscap cache file');
+			throw new Exception(
+				'You have to provide a path to read/store the browscap cache file'
+			);
 		}
 
 		$old_cache_dir = $cache_dir;
-		$cache_dir     = realpath($cache_dir);
+		$cache_dir = realpath($cache_dir);
 
 		if (false === $cache_dir) {
 			throw new Exception(
-				sprintf(
-					'The cache path %s is invalid. Are you sure that it exists and that you have permission to access it?',
-					$old_cache_dir
-				)
+				sprintf('The cache path %s is invalid. Are you sure that it exists and that you have permission to access it?', $old_cache_dir)
 			);
 		}
 
 		// Is the cache dir really the directory or is it directly the file?
 		if (substr($cache_dir, -4) === '.php') {
 			$this->cacheFilename = basename($cache_dir);
-			$this->cacheDir      = dirname($cache_dir);
+			$this->cacheDir = dirname($cache_dir);
 		} else {
 			$this->cacheDir = $cache_dir;
 		}
 
 		$this->cacheDir .= DIRECTORY_SEPARATOR;
+
+		//$this->updateCache(); // debugging, mindshare
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getSourceVersion()
 	{
 		return $this->_source_version;
@@ -255,11 +256,10 @@ class Browscap
 	 *
 	 * Gets the information about the browser by User Agent
 	 *
-	 * @param string $user_agent   the user agent string
-	 * @param bool   $return_array whether return an array or an object
-	 *
+	 * @param string $user_agent  the user agent string
+	 * @param bool $return_array  whether return an array or an object
 	 * @throws Exception
-	 * @return \stdClass|array  the object containing the browsers details. Array if
+	 * @return stdClass|array  the object containing the browsers details. Array if
 	 *                    $return_array is set to true.
 	 */
 	public function getBrowser($user_agent = null, $return_array = false)
@@ -267,7 +267,7 @@ class Browscap
 		// Load the cache at the first request
 		if (!$this->_cacheLoaded) {
 			$cache_file = $this->cacheDir . $this->cacheFilename;
-			$ini_file   = $this->cacheDir . $this->iniFilename;
+			$ini_file = $this->cacheDir . $this->iniFilename;
 
 			// Set the interval only if needed
 			if ($this->doAutoUpdate && file_exists($ini_file)) {
@@ -278,8 +278,10 @@ class Browscap
 
 			$update_cache = true;
 
-			if (file_exists($cache_file) && file_exists($ini_file) && ($interval <= $this->updateInterval)) {
-				if ($this->_loadCache($cache_file)) {
+			if (file_exists($cache_file) && file_exists($ini_file) && ($interval <= $this->updateInterval))
+			{
+				if ($this->_loadCache($cache_file))
+				{
 					$update_cache = false;
 				}
 			}
@@ -301,10 +303,12 @@ class Browscap
 					}
 				}
 
-				if (!$this->_loadCache($cache_file)) {
-					throw new Exception('Cannot load this cache version - the cache format is not compatible.');
+				if (!$this->_loadCache($cache_file))
+				{
+					throw new Exception("Cannot load this cache version - the cache format is not compatible.");
 				}
 			}
+
 		}
 
 		// Automatically detect the useragent
@@ -330,8 +334,7 @@ class Browscap
 					// match with numeric replacements
 					array_shift($matches);
 
-					$match_string = self::COMPRESSION_PATTERN_START
-						. implode(self::COMPRESSION_PATTERN_DELIMITER, $matches);
+					$match_string = self::COMPRESSION_PATTERN_START . implode(self::COMPRESSION_PATTERN_DELIMITER, $matches);
 
 					if (!isset($pattern_data[$match_string])) {
 						// partial match - numbers are not present, but everything else is ok
@@ -386,16 +389,13 @@ class Browscap
 		$wrappers = array('http', 'https', 'ftp');
 
 		foreach ($wrappers as $wrapper) {
-			$url = getenv($wrapper . '_proxy');
+			$url = getenv($wrapper.'_proxy');
 			if (!empty($url)) {
-				$params = array_merge(
-					array(
-						'port' => null,
-						'user' => null,
-						'pass' => null,
-					),
-					parse_url($url)
-				);
+				$params = array_merge(array(
+					'port'  => null,
+					'user'  => null,
+					'pass'  => null,
+				), parse_url($url));
 				$this->addProxySettings($params['host'], $params['port'], $wrapper, $params['user'], $params['pass']);
 			}
 		}
@@ -404,27 +404,24 @@ class Browscap
 	/**
 	 * Add proxy settings to the stream context array.
 	 *
-	 * @param string $server   Proxy server/host
-	 * @param int    $port     Port
-	 * @param string $wrapper  Wrapper: "http", "https", "ftp", others...
-	 * @param string $username Username (when requiring authentication)
-	 * @param string $password Password (when requiring authentication)
+	 * @param string $server    Proxy server/host
+	 * @param int    $port      Port
+	 * @param string $wrapper   Wrapper: "http", "https", "ftp", others...
+	 * @param string $username  Username (when requiring authentication)
+	 * @param string $password  Password (when requiring authentication)
 	 *
 	 * @return Browscap
 	 */
 	public function addProxySettings($server, $port = 3128, $wrapper = 'http', $username = null, $password = null)
 	{
-		$settings = array(
-			$wrapper => array(
-				'proxy'             => sprintf('tcp://%s:%d', $server, $port),
-				'request_fulluri'   => true,
-				'timeout'           => $this->timeout,
-			)
-		);
+		$settings = array($wrapper => array(
+			'proxy'             => sprintf('tcp://%s:%d', $server, $port),
+			'request_fulluri'   => true,
+		));
 
 		// Proxy authentication (optional)
 		if (isset($username) && isset($password)) {
-			$settings[$wrapper]['header'] = 'Proxy-Authorization: Basic ' . base64_encode($username . ':' . $password);
+			$settings[$wrapper]['header'] = 'Proxy-Authorization: Basic '.base64_encode($username.':'.$password);
 		}
 
 		// Add these new settings to the stream context options array
@@ -454,12 +451,12 @@ class Browscap
 		$wrappers = isset($wrapper) ? array($wrapper) : array_keys($this->_streamContextOptions);
 
 		$clearedWrappers = array();
-		$options         = array('proxy', 'request_fulluri', 'header');
+		$options = array('proxy', 'request_fulluri', 'header');
 		foreach ($wrappers as $wrapper) {
 
 			// remove wrapper options related to proxy settings
 			if (isset($this->_streamContextOptions[$wrapper]['proxy'])) {
-				foreach ($options as $option) {
+				foreach ($options as $option){
 					unset($this->_streamContextOptions[$wrapper][$option]);
 				}
 
@@ -482,18 +479,7 @@ class Browscap
 	 */
 	public function getStreamContextOptions()
 	{
-		$streamContextOptions = $this->_streamContextOptions;
-
-		if (empty($streamContextOptions)) {
-			// set default context, including timeout
-			$streamContextOptions = array(
-				'http' => array(
-					'timeout' => $this->timeout,
-				)
-			);
-		}
-
-		return $streamContextOptions;
+		return $this->_streamContextOptions;
 	}
 
 	/**
@@ -505,7 +491,7 @@ class Browscap
 	 */
 	public function updateCache()
 	{
-		$ini_path   = $this->cacheDir . $this->iniFilename;
+		$ini_path = $this->cacheDir . $this->iniFilename;
 		$cache_path = $this->cacheDir . $this->cacheFilename;
 
 		// Choose the right url
@@ -540,19 +526,18 @@ class Browscap
 
 		$tmp_user_agents = array_keys($browsers);
 
+
 		usort($tmp_user_agents, array($this, 'compareBcStrings'));
 
 		$user_agents_keys = array_flip($tmp_user_agents);
-		$properties_keys  = array_flip($this->_properties);
+		$properties_keys = array_flip($this->_properties);
 
 		$tmp_patterns = array();
 
 		foreach ($tmp_user_agents as $i => $user_agent) {
 
-			if (empty($browsers[$user_agent]['Comment'])
-				|| false !== strpos($user_agent, '*')
-				|| false !== strpos($user_agent, '?')
-			) {
+			if (empty($browsers[$user_agent]['Comment']) || strpos($user_agent, '*') !== false || strpos($user_agent, '?') !== false)
+			{
 				$pattern = $this->_pregQuote($user_agent);
 
 				$matches_count = preg_match_all('@\d@', $pattern, $matches);
@@ -572,28 +557,25 @@ class Browscap
 
 			if (!empty($browsers[$user_agent]['Parent'])) {
 				$parent = $browsers[$user_agent]['Parent'];
-
 				$parent_key = $user_agents_keys[$parent];
-
-				$browsers[$user_agent]['Parent']       = $parent_key;
+				$browsers[$user_agent]['Parent'] = $parent_key;
 				$this->_userAgents[$parent_key . '.0'] = $tmp_user_agents[$parent_key];
 			};
 
 			$browser = array();
 			foreach ($browsers[$user_agent] as $key => $value) {
-				if (!isset($properties_keys[$key])) {
+				if (!isset($properties_keys[$key]))
+				{
 					continue;
 				}
 
-				$key           = $properties_keys[$key];
+				$key = $properties_keys[$key];
 				$browser[$key] = $value;
 			}
 
+
 			$this->_browsers[] = $browser;
 		}
-
-		// reducing memory usage by unsetting $tmp_user_agents
-		unset($tmp_user_agents);
 
 		foreach ($tmp_patterns as $pattern => $pattern_data) {
 			if (is_int($pattern_data)) {
@@ -622,35 +604,19 @@ class Browscap
 		return (bool) file_put_contents($cache_path, $cache, LOCK_EX);
 	}
 
-	/**
-	 * @param string $a
-	 * @param string $b
-	 *
-	 * @return int
-	 */
 	protected function compareBcStrings($a, $b)
 	{
 		$a_len = strlen($a);
 		$b_len = strlen($b);
 
-		if ($a_len > $b_len) {
-			return -1;
-		}
-
-		if ($a_len < $b_len) {
-			return 1;
-		}
+		if ($a_len > $b_len) return -1;
+		if ($a_len < $b_len) return 1;
 
 		$a_len = strlen(str_replace(array('*', '?'), '', $a));
 		$b_len = strlen(str_replace(array('*', '?'), '', $b));
 
-		if ($a_len > $b_len) {
-			return -1;
-		}
-
-		if ($a_len < $b_len) {
-			return 1;
-		}
+		if ($a_len > $b_len) return -1;
+		if ($a_len < $b_len) return 1;
 
 		return 0;
 	}
@@ -662,7 +628,7 @@ class Browscap
 	 * in all the $matches and if they are we restore them to the $pattern, removing from the $matches.
 	 * This gives us patterns with "(\d)" only in places that differ for some matches.
 	 *
-	 * @param array  $matches
+	 * @param array $matches
 	 * @param string $pattern
 	 *
 	 * @return array of $matches
@@ -670,10 +636,13 @@ class Browscap
 	protected function deduplicateCompressionPattern($matches, &$pattern)
 	{
 		$tmp_matches = $matches;
+
 		$first_match = array_shift($tmp_matches);
+
 		$differences = array();
 
-		foreach ($tmp_matches as $some_match) {
+		foreach ($tmp_matches as $some_match)
+		{
 			$differences += array_diff_assoc($first_match, $some_match);
 		}
 
@@ -681,16 +650,15 @@ class Browscap
 
 		$prepared_matches = array();
 
-		foreach ($matches as $i => $some_match) {
-			$key = self::COMPRESSION_PATTERN_START
-				. implode(self::COMPRESSION_PATTERN_DELIMITER, array_diff_assoc($some_match, $identical));
-
-			$prepared_matches[$key] = $i;
+		foreach ($matches as $i => $some_match)
+		{
+			$prepared_matches[self::COMPRESSION_PATTERN_START . implode(self::COMPRESSION_PATTERN_DELIMITER, array_diff_assoc($some_match, $identical))] = $i;
 		}
 
 		$pattern_parts = explode('(\d)', $pattern);
 
-		foreach ($identical as $position => $value) {
+		foreach ($identical as $position => $value)
+		{
 			$pattern_parts[$position + 1] = $pattern_parts[$position] . $value . $pattern_parts[$position + 1];
 			unset($pattern_parts[$position]);
 		}
@@ -723,8 +691,8 @@ class Browscap
 	/**
 	 * Converts preg match patterns back to browscap match patterns.
 	 *
-	 * @param string        $pattern
-	 * @param array|boolean $matches
+	 * @param string $pattern
+	 * @param array $matches
 	 *
 	 * @return string
 	 */
@@ -732,21 +700,17 @@ class Browscap
 	{
 		// list of escaped characters: http://www.php.net/manual/en/function.preg-quote.php
 		// to properly unescape '?' which was changed to '.', I replace '\.' (real dot) with '\?', then change '.' to '?' and then '\?' to '.'.
-		$search  = array(
-			'\\' . self::REGEX_DELIMITER, '\\.', '\\\\', '\\+', '\\[', '\\^', '\\]', '\\$', '\\(', '\\)', '\\{', '\\}',
-			'\\=', '\\!', '\\<', '\\>', '\\|', '\\:', '\\-', '.*', '.', '\\?'
-		);
-		$replace = array(
-			self::REGEX_DELIMITER, '\\?', '\\', '+', '[', '^', ']', '$', '(', ')', '{', '}', '=', '!', '<', '>', '|',
-			':', '-', '*', '?', '.'
-		);
+		$search = array('\\' . self::REGEX_DELIMITER, '\\.', '\\\\', '\\+', '\\[', '\\^', '\\]', '\\$', '\\(', '\\)', '\\{', '\\}', '\\=', '\\!', '\\<', '\\>', '\\|', '\\:', '\\-', '.*', '.', '\\?');
+		$replace = array(self::REGEX_DELIMITER, '\\?', '\\', '+', '[', '^', ']', '$', '(', ')', '{', '}', '=', '!', '<', '>', '|', ':', '-', '*', '?', '.');
 
 		$result = substr(str_replace($search, $replace, $pattern), 2, -2);
 
-		if ($matches) {
-			foreach ($matches as $one_match) {
+		if ($matches)
+		{
+			foreach ($matches as $one_match)
+			{
 				$num_pos = strpos($result, '(\d)');
-				$result  = substr_replace($result, $one_match, $num_pos, 4);
+				$result = substr_replace($result, $one_match, $num_pos, 4);
 			}
 		}
 
@@ -756,32 +720,24 @@ class Browscap
 	/**
 	 * Loads the cache into object's properties
 	 *
-	 * @param string $cache_file
+	 * @param $cache_file
 	 *
 	 * @return boolean
 	 */
 	protected function _loadCache($cache_file)
 	{
-		$cache_version  = null;
-		$source_version = null;
-		$browsers       = array();
-		$userAgents     = array();
-		$patterns       = array();
-		$properties     = array();
-
-		$this->_cacheLoaded = false;
-
 		require $cache_file;
 
-		if (!isset($cache_version) || $cache_version != self::CACHE_FILE_VERSION) {
+		if (!isset($cache_version) || $cache_version != self::CACHE_FILE_VERSION)
+		{
 			return false;
 		}
 
 		$this->_source_version = $source_version;
-		$this->_browsers       = $browsers;
-		$this->_userAgents     = $userAgents;
-		$this->_patterns       = $patterns;
-		$this->_properties     = $properties;
+		$this->_browsers = $browsers;
+		$this->_userAgents = $userAgents;
+		$this->_patterns = $patterns;
+		$this->_properties = $properties;
 
 		$this->_cacheLoaded = true;
 
@@ -798,9 +754,9 @@ class Browscap
 		$cacheTpl = "<?php\n\$source_version=%s;\n\$cache_version=%s;\n\$properties=%s;\n\$browsers=%s;\n\$userAgents=%s;\n\$patterns=%s;\n";
 
 		$propertiesArray = $this->_array2string($this->_properties);
-		$patternsArray   = $this->_array2string($this->_patterns);
+		$patternsArray = $this->_array2string($this->_patterns);
 		$userAgentsArray = $this->_array2string($this->_userAgents);
-		$browsersArray   = $this->_array2string($this->_browsers);
+		$browsersArray = $this->_array2string($this->_browsers);
 
 		return sprintf(
 			$cacheTpl,
@@ -823,7 +779,7 @@ class Browscap
 	protected function _getStreamContext($recreate = false)
 	{
 		if (!isset($this->_streamContext) || true === $recreate) {
-			$this->_streamContext = stream_context_create($this->getStreamContextOptions());
+			$this->_streamContext = stream_context_create($this->_streamContextOptions);
 		}
 
 		return $this->_streamContext;
@@ -834,8 +790,7 @@ class Browscap
 	 * his syntax to the PHP ini parser
 	 *
 	 * @param string $url  the url of the remote server
-	 * @param string $path the path of the ini file to update
-	 *
+	 * @param string $path  the path of the ini file to update
 	 * @throws Exception
 	 * @return bool if the ini file was updated
 	 */
@@ -861,8 +816,16 @@ class Browscap
 
 		// Get updated .ini file
 		$browscap = $this->_getRemoteData($url);
+
+
 		$browscap = explode("\n", $browscap);
-		$pattern  = self::REGEX_DELIMITER . '(' . self::VALUES_TO_QUOTE . ')="?([^"]*)"?$' . self::REGEX_DELIMITER;
+
+		$pattern = self::REGEX_DELIMITER
+			. '('
+			. self::VALUES_TO_QUOTE
+			. ')="?([^"]*)"?$'
+			. self::REGEX_DELIMITER;
+
 
 		// Ok, lets read the file
 		$content = '';
@@ -889,7 +852,7 @@ class Browscap
 	protected function _getRemoteMTime()
 	{
 		$remote_datetime = $this->_getRemoteData($this->remoteVerUrl);
-		$remote_tmstp    = strtotime($remote_datetime);
+		$remote_tmstp = strtotime($remote_datetime);
 
 		if (!$remote_tmstp) {
 			throw new Exception("Bad datetime format from {$this->remoteVerUrl}");
@@ -907,7 +870,7 @@ class Browscap
 	protected function _getLocalMTime()
 	{
 		if (!is_readable($this->localFile) || !is_file($this->localFile)) {
-			throw new Exception('Local file is not readable');
+			throw new Exception("Local file is not readable");
 		}
 
 		return filemtime($this->localFile);
@@ -920,7 +883,6 @@ class Browscap
 	 * convert strings to numbers.
 	 *
 	 * @param array $array the array to parse and convert
-	 *
 	 * @return string the array parsed into a PHP string
 	 */
 	protected function _array2string($array)
@@ -931,9 +893,9 @@ class Browscap
 			if (is_int($key)) {
 				$key = '';
 			} elseif (ctype_digit((string) $key) || '.0' === substr($key, -2)) {
-				$key = intval($key) . '=>';
+				$key = intval($key) . '=>' ;
 			} else {
-				$key = "'" . str_replace("'", "\'", $key) . "'=>";
+				$key = "'" . str_replace("'", "\'", $key) . "'=>" ;
 			}
 
 			if (is_array($value)) {
@@ -980,7 +942,6 @@ class Browscap
 	 * Retrieve the data identified by the URL
 	 *
 	 * @param string $url the url of the data
-	 *
 	 * @throws Exception
 	 * @return string the retrieved data
 	 */
@@ -998,85 +959,65 @@ class Browscap
 					throw new Exception('Cannot open the local file');
 				}
 			case self::UPDATE_FOPEN:
-				if (ini_get('allow_url_fopen') && function_exists('file_get_contents')) {
-					// include proxy settings in the file_get_contents() call
-					$context = $this->_getStreamContext();
-					$file    = file_get_contents($url, false, $context);
+				// include proxy settings in the file_get_contents() call
+				$context = $this->_getStreamContext();
+				$file = file_get_contents($url, false, $context);
 
-					if ($file !== false) {
-						return $file;
-					}
-				}// else try with the next possibility (break omitted)
+				if ($file !== false) {
+					return $file;
+				} // else try with the next possibility (break omitted)
 			case self::UPDATE_FSOCKOPEN:
-				if (function_exists('fsockopen')) {
-					$remote_url     = parse_url($url);
-					$contextOptions = $this->getStreamContextOptions();
+				$remote_url = parse_url($url);
+				$remote_handler = fsockopen($remote_url['host'], 80, $c, $e, $this->timeout);
 
-					$errno   = 0;
-					$errstr  = '';
+				if ($remote_handler) {
+					stream_set_timeout($remote_handler, $this->timeout);
 
-					if (empty($contextOptions)) {
-						$port           = (empty($remote_url['port']) ? 80 : $remote_url['port']);
-						$remote_handler = fsockopen($remote_url['host'], $port, $errno, $errstr, $this->timeout);
-					} else {
-						$context = $this->_getStreamContext();
-
-						$remote_handler = stream_socket_client(
-							$url, $errno, $errstr, $this->timeout, STREAM_CLIENT_CONNECT, $context
-						);
+					if (isset($remote_url['query'])) {
+						$remote_url['path'] .= '?' . $remote_url['query'];
 					}
 
-					if ($remote_handler) {
-						stream_set_timeout($remote_handler, $this->timeout);
+					$out = sprintf(
+						self::REQUEST_HEADERS,
+						$remote_url['path'],
+						$remote_url['host'],
+						$this->_getUserAgent()
+					);
 
-						if (isset($remote_url['query'])) {
-							$remote_url['path'] .= '?' . $remote_url['query'];
+					fwrite($remote_handler, $out);
+
+					$response = fgets($remote_handler);
+					if (strpos($response, '200 OK') !== false) {
+						$file = '';
+						while (!feof($remote_handler)) {
+							$file .= fgets($remote_handler);
 						}
 
-						$out = sprintf(
-							self::REQUEST_HEADERS,
-							$remote_url['path'],
-							$remote_url['host'],
-							$this->_getUserAgent()
-						);
+						$file = str_replace("\r\n", "\n", $file);
+						$file = explode("\n\n", $file);
+						array_shift($file);
 
-						fwrite($remote_handler, $out);
+						$file = implode("\n\n", $file);
 
-						$response = fgets($remote_handler);
-						if (strpos($response, '200 OK') !== false) {
-							$file = '';
-							while (!feof($remote_handler)) {
-								$file .= fgets($remote_handler);
-							}
+						fclose($remote_handler);
 
-							$file = str_replace("\r\n", "\n", $file);
-							$file = explode("\n\n", $file);
-							array_shift($file);
-
-							$file = implode("\n\n", $file);
-
-							fclose($remote_handler);
-
-							return $file;
-						}
-					}
-				}// else try with the next possibility
-			case self::UPDATE_CURL:
-				if (extension_loaded('curl')) { // make sure curl is loaded
-					$ch = curl_init($url);
-
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-					curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
-					curl_setopt($ch, CURLOPT_USERAGENT, $this->_getUserAgent());
-
-					$file = curl_exec($ch);
-
-					curl_close($ch);
-
-					if ($file !== false) {
 						return $file;
 					}
-				}// else try with the next possibility
+				} // else try with the next possibility
+			case self::UPDATE_CURL:
+				$ch = curl_init($url);
+
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+				curl_setopt($ch, CURLOPT_USERAGENT, $this->_getUserAgent());
+
+				$file = curl_exec($ch);
+
+				curl_close($ch);
+
+				if ($file !== false) {
+					return $file;
+				} // else try with the next possibility
 			case false:
 				throw new Exception('Your server can\'t connect to external resources. Please update the file manually.');
 		}
@@ -1109,7 +1050,5 @@ class Browscap
  * @license    http://www.opensource.org/licenses/MIT MIT License
  * @link       https://github.com/GaretJax/phpbrowscap/
  */
-class Exception extends \Exception
-{
-	// nothing to do here
-}
+class Exception extends BaseException
+{}

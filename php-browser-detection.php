@@ -3,7 +3,7 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://wordpress.org/extend/plugins/php-browser-detection/
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 3.0
+Version: 3.1
 Author: Mindshare Studios, Inc.
 Author URI: http://mind.sh/are
 License: GNU General Public License v3
@@ -41,7 +41,7 @@ if(!defined('PBD_DIR_PATH')) {
 
 require_once('inc/admin.php');
 require_once('lib/Browscap.php');
-$browscap = new \phpbrowscap\Browscap(PBD_DIR_PATH.'/cache');
+$browscap = new \phpbrowscap\Browscap(PBD_DIR_PATH.'cache');
 require_once('inc/deprecated.php');
 
 /**
