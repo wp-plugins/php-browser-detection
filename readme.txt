@@ -2,7 +2,7 @@
 Contributors: mindshare, MartyThornley
 Donate link: http://mind.sh/are/donate/
 Tags: php, browser detection, browser, internet explorer, iphone, mobile, browscap, detection
-Version: 3.6
+Version: 3.1
 Tested up to: 3.9.2
 Stable tag: 3.0
 
