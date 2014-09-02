@@ -3,7 +3,7 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://wordpress.org/extend/plugins/php-browser-detection/
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 3.1
+Version: 3.1.1
 Author: Mindshare Studios, Inc.
 Author URI: http://mind.sh/are
 License: GNU General Public License v3
@@ -164,6 +164,13 @@ function is_ie($version = '') {
  */
 function is_desktop() {
 	$browser_info = php_browser_info();
+
+	// later than 3.1.1 version
+	if(!is_tablet() && !is_mobile()) {
+		return TRUE;
+	}
+
+	// pre 3.1 version
 	if(isset($browser_info['Device_Type']) && strpos($browser_info['Device_Type'], "Desktop") !== FALSE) {
 		return TRUE;
 	}
@@ -309,4 +316,27 @@ function browser_supports_css() {
 		}
 	}
 	return FALSE;
+}
+
+/**
+ * Evaluates natural language strings to boolean equivalent
+ *
+ * All values defined as TRUE will return TRUE, anything else is FALSE.
+ * Boolean values will be passed through.
+ *
+ * @since  3.1.1
+ *
+ * @param string $string        The natural language value
+ * @param array  $true_synonyms A list strings that are TRUE
+ *
+ * @return boolean The boolean value of the provided text
+ **/
+function pbd_is_true($string, $true_synonyms = array('yes', 'y', 'true', '1', 'on', 'open', 'affirmative', '+', 'positive')) {
+	if(is_array($string)) {
+		return FALSE;
+	}
+	if(is_bool($string)) {
+		return $string;
+	}
+	return in_array(strtolower(trim($string)), $true_synonyms);
 }
