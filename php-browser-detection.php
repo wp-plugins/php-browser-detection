@@ -3,11 +3,11 @@
 Plugin Name: PHP Browser Detection
 Plugin URI: http://wordpress.org/extend/plugins/php-browser-detection/
 Description: Use PHP to detect browsers for conditional CSS or to detect mobile phones.
-Version: 3.1.1
+Version: 3.1.2
 Author: Mindshare Studios, Inc.
 Author URI: http://mind.sh/are
 License: GNU General Public License v3
-License URI: license.txt
+License URI: LICENSE
 Text Domain: php-browser-detection
 */
 
@@ -40,8 +40,10 @@ if(!defined('PBD_DIR_PATH')) {
 }
 
 require_once('inc/admin.php');
+
 require_once('lib/Browscap.php');
 $browscap = new \phpbrowscap\Browscap(PBD_DIR_PATH.'cache');
+
 require_once('inc/deprecated.php');
 
 /**
@@ -185,7 +187,7 @@ function is_desktop() {
 function is_tablet() {
 	$browser_info = php_browser_info();
 	if(isset($browser_info['isTablet'])) {
-		if($browser_info['isTablet'] == 1 || $browser_info['isTablet'] == "true" || strpos($browser_info['Device_Type'], "Tablet") !== FALSE) {
+		if($browser_info['isTablet'] == 1 || $browser_info['isTablet'] == "true" || isset($browser_info['Device_Type']) && strpos($browser_info['Device_Type'], "Tablet") !== FALSE) {
 			return TRUE;
 		}
 	}
@@ -200,7 +202,7 @@ function is_tablet() {
 function is_mobile() {
 	$browser_info = php_browser_info();
 	if(isset($browser_info['isMobileDevice'])) {
-		if($browser_info['isMobileDevice'] == 1 || $browser_info['isMobileDevice'] == "true" || strpos($browser_info['Device_Type'], "Mobile") !== FALSE) {
+		if($browser_info['isMobileDevice'] == 1 || $browser_info['isMobileDevice'] == "true" || isset($browser_info['Device_Type']) &&  strpos($browser_info['Device_Type'], "Mobile") !== FALSE) {
 			return TRUE;
 		}
 	}

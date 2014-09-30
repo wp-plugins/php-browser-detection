@@ -106,9 +106,9 @@ class Browscap
 	//public $remoteIniUrl = 'http://browscap.org/stream?q=Full_PHP_BrowsCapINI';
 	public $remoteVerUrl = 'http://browscap.org/version';
 	public $timeout = 5;
-	public $updateInterval = 432000;  // 5 days
+	public $updateInterval = 2592000;  // 30 days, default 5 mindshare
 	public $errorInterval = 7200;  // 2 hours
-	public $doAutoUpdate = true;
+	public $doAutoUpdate = false; // default true, mindshare
 	public $updateMethod = null;
 
 	/**

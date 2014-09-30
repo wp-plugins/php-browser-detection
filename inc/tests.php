@@ -153,14 +153,14 @@ get_header();
 							};
 							echo '</pre>';
 
-							echo '<pre>if(is_firefox(24)) = ';
-							if(is_firefox(24)) {
+							echo '<pre>if(is_firefox(35)) = ';
+							if(is_firefox(35)) {
 								echo TRUE;
 							};
 							echo '</pre>';
 
-							echo '<pre>if(is_chrome(32)) = ';
-							if(is_chrome(32)) {
+							echo '<pre>if(is_chrome(37)) = ';
+							if(is_chrome(37)) {
 								echo TRUE;
 							};
 							echo '</pre>';
